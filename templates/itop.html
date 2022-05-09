@@ -14,20 +14,27 @@
 </head>
 
 <body>
-    <div style="top:60; left:375 ; position: absolute; font-family: Courier New; font-size: 90px; color: black"><b>
+ <div style="top:50; left:375 ; position: absolute; font-family: Courier New; font-size: 90px; color: black"><b>
             INFIX TO POSTFIX</b></div>
-    <div style="top: 250; left:500 ; position: absolute; font-family: Garamond; font-size: 35px; color: black">
+    <div style="top: 200; left:500 ; position: absolute; font-family: Garamond; font-size: 35px; color: black">
         <br>Example:
-        <br>Infix format:� � � A�*�B�+�C�/�D
-        <br>Postfix format:� �A�B�*�C�D�/�+
+        <br>Infix format: A * B + C / D
+        <br>Postfix format: A B * C D / +
     </div>
-    <div style="top: 450; left:450 ; position: absolute; font-family: Garamond; font-size: 35px; color: black">
+    <div style="top: 425; left:450 ; position: absolute; font-family: Garamond; font-size: 35px; color: black">
         Enter your Infix expression in the box given below</div>
-    <div style="position:relative; left:500px; top:500px;">
+    <div style="position:absolute; left:500px; top:450px;">
         <form action="{{ url_for('convert_i')}}" method="post">
-            <input name="infix-po" placeholder="Enter the Expression" type="text" size="50" style="height: 120px; width:600px" />
-            <button type="submit">Submit</button>
+            <br>
+            <input name="infix-po" placeholder="Enter the Expression" type="text" size="50"
+                style="height: 120px; width:600px" />
+                <br>
+                <br>
+        <center>
+            <button type="submit" style="border-radius: 2px; background-color: blue; color: whitesmoke;">Submit</button>
+        </center>
         </form>
+        
     </div>
 
 </body>
