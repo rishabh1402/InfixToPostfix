@@ -102,7 +102,7 @@ class Convert:
 
 @app.route('/')
 def home():
-        return render_template("home.html")
+        return render_template("itop.html")
 
 @app.route('/convert_i' ,methods=["GET", "POST"])
 def convert_i():
@@ -111,11 +111,11 @@ def convert_i():
 	output = obj.infixToPostfix(string)
 	f_output = ''.join(output)
 	return render_template('itop_res.html', converted_text='{}'.format(f_output))
-
+"""
 @app.route('/itop')
 def itop():
         return render_template("itop.html")
-
+"""
 if __name__ == "__main__":
     app.run(debug=True)
 
