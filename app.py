@@ -84,9 +84,6 @@ class Convert:
 			# An operator is encountered
 			else:
 				while(not self.isEmpty() and self.notGreater(i)):
-						# this is to pass cases like a^b^c
-					# without if ab^c^
-					# with if abc^^
 					if i == "^" and self.array[-1] == i:
 						break
 					self.output.append(self.pop())
