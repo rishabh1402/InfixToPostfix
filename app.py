@@ -6,96 +6,48 @@ from flask import Flask, render_template, redirect, url_for, Response, request, 
 
 app = Flask(__name__)
 
-class Convert:
+Operators = set(['+', '-', '*', '/', '(', ')', '^'])  # collection of Operators
 
-	# Constructor to initialize the class variables
-	def __init__(self, capacity):
-		self.top = -1
-		self.capacity = capacity
-		# This array is used a stack
-		self.array = []
-		# Precedence setting
-		self.output = []
-		self.precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+Priority = {'+':1, '-':1, '*':2, '/':2, '^':3} # dictionary having priorities of Operators
+ 
+ 
+def infixToPostfix(expression): 
 
-	# check if the stack is empty
-	def isEmpty(self):
-		return True if self.top == -1 else False
+    stack = [] # initialization of empty stack
 
-	# Return the value of the top of the stack
-	def peek(self):
-		return self.array[-1]
+    output = ''  
 
-	# Pop the element from the stack
-	def pop(self):
-		if not self.isEmpty():
-			self.top -= 1
-			return self.array.pop()
-		else:
-			return "$"
+    for character in expression:
 
-	# Push the element to the stack
-	def push(self, op):
-		self.top += 1
-		self.array.append(op)
+        if character not in Operators:  # if an operand append in postfix expression
 
-	# A utility function to check is the given character
-	# is operand
-	def isOperand(self, ch):
-		return ch.isalpha()
+            output+= character
 
-	# Check if the precedence of operator is strictly
-	# less than top of stack or not
-	def notGreater(self, i):
-		try:
-			a = self.precedence[i]
-			b = self.precedence[self.peek()]
-			return True if a <= b else False
-		except KeyError:
-			return False
+        elif character=='(':  # else Operators push onto stack
 
-	# The main function that
-	# converts given infix expression
-	# to postfix expression
-	def infixToPostfix(self, exp):
+            stack.append('(')
 
-		# Iterate over the expression for conversion
-		for i in exp:
-			# If the character is an operand,
-			# add it to output
-			if self.isOperand(i):
-				self.output.append(i)
+        elif character==')':
 
-			# If the character is an '(', push it to stack
-			elif i == '(':
-				self.push(i)
+            while stack and stack[-1]!= '(':
 
-			# If the scanned character is an ')', pop and
-			# output from the stack until and '(' is found
-			elif i == ')':
-				while((not self.isEmpty()) and self.peek() != '('):
-					a = self.pop()
-					self.output.append(a)
-				if (not self.isEmpty() and self.peek() != '('):
-					return -1
-				else:
-					self.pop()
+                output+=stack.pop()
 
-			# An operator is encountered
-			else:
-				while(not self.isEmpty() and self.notGreater(i)):
-					if i == "^" and self.array[-1] == i:
-						break
-					self.output.append(self.pop())
-				self.push(i)
+            stack.pop()
 
-		# pop all the operator from the stack
-		while not self.isEmpty():
-			self.output.append(self.pop())
+        else: 
 
-		return self.output
+            while stack and stack[-1]!='(' and Priority[character]<=Priority[stack[-1]]:
 
+                output+=stack.pop()
 
+            stack.append(character)
+
+    while stack:
+
+        output+=stack.pop()
+
+    return output
 
 @app.route('/')
 def home():
@@ -104,8 +56,7 @@ def home():
 @app.route('/convert_i' ,methods=["GET", "POST"])
 def convert_i():
 	string = request.form.get("infix-po", False)
-	obj = Convert(len(string))
-	output = obj.infixToPostfix(string)
+	output = infixToPostfix(string)
 	f_output = ''.join(output)
 	return render_template('itop_res.html', converted_text='{}'.format(f_output))
 """
